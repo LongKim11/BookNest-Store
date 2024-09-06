@@ -12,6 +12,19 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello world");
 });
 
+app.get("/books", async (req, res) => {
+  try {
+    const books = await Book.find({});
+    res.status(200).json({
+      count: books.length,
+      data: books,
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ message: err.message });
+  }
+});
+
 app.post("/books", async (req, res) => {
   try {
     const title = req.body.title;
