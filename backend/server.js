@@ -67,11 +67,25 @@ app.put("/books/:id", async (req, res) => {
     });
   }
   const id = req.params.id;
-  const book = await Book.findByIdAndUpdate(id, req.body);
+  const result = await Book.findByIdAndUpdate(id, req.body);
   if (!book) {
     res.status(400).json({ message: "Book not found" });
   }
   res.status(200).json({ message: "Book updated successfully" });
+});
+
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await Book.findByIdAndDelete(id);
+    if (!result) {
+      res.status(400).json({ message: "Can't not delete" });
+    }
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ message: err.message });
+  }
 });
 
 app.listen(PORT, () => {
