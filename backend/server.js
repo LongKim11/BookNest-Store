@@ -56,6 +56,24 @@ app.post("/books", async (req, res) => {
   }
 });
 
+app.put("/books/:id", async (req, res) => {
+  const title = req.body.title;
+  const author = req.body.author;
+  const publishYear = req.body.publishYear;
+
+  if (!title || !author || !publishYear) {
+    res.status(400).send({
+      message: "Send all required fields: title, author, publishYear",
+    });
+  }
+  const id = req.params.id;
+  const book = await Book.findByIdAndUpdate(id, req.body);
+  if (!book) {
+    res.status(400).json({ message: "Book not found" });
+  }
+  res.status(200).json({ message: "Book updated successfully" });
+});
+
 app.listen(PORT, () => {
   console.log(`App is listening at http://localhost:${PORT}`);
 });
