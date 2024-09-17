@@ -39,7 +39,6 @@ router.post("/", async (req, res) => {
     }
     const newBook = { title: title, author: author, publishYear: publishYear };
     const book = await Book.create(newBook);
-    console.log(book);
     return res.status(200).send(book);
   } catch (err) {
     console.log(err.message);
