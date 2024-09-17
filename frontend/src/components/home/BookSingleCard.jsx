@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import { BsInfoCircle } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
-import { BiUserCircle } from "react-icons/bi";
+import { BiUserCircle, BiShow } from "react-icons/bi";
 import { PiBookOpenTextLight } from "react-icons/pi";
+import { useState } from "react";
+import BookDetail from "./BookDetail";
 
 const BookSingleCard = ({ item }) => {
+  const [showDetail, setShowDetail] = useState(false);
+
   return (
     <div
       key={item._id}
@@ -24,6 +28,10 @@ const BookSingleCard = ({ item }) => {
         <h2 className="my-1">{item.author}</h2>
       </div>
       <div className="flex justify-between items-center gap-x-2 mt-4 p-4">
+        <BiShow
+          className="text-3xl text-blue-800 hover:text-black cursor-pointer"
+          onClick={() => setShowDetail(true)}
+        ></BiShow>
         <Link to={`/books/details/${item._id}`}>
           <BsInfoCircle className="text-2xl text-green-800 hover:text-black"></BsInfoCircle>
         </Link>
@@ -34,6 +42,12 @@ const BookSingleCard = ({ item }) => {
           <MdOutlineDelete className="text-2xl text-red-600 hover:text-black"></MdOutlineDelete>
         </Link>
       </div>
+      {showDetail && (
+        <BookDetail
+          item={item}
+          onClose={() => setShowDetail(false)}
+        ></BookDetail>
+      )}
     </div>
   );
 };
