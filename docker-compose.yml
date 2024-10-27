@@ -2,14 +2,18 @@ version: "3"
 
 services:
   react-app:
-    image: react-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
     networks:
       - mern-app
 
   api-server:
-    image: api-server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8092:8092"
     networks:
