@@ -7,7 +7,6 @@ import os from "os";
 
 const app = express();
 
-// Convert JSON string in payload to JSON object and parse to req.body
 app.use(express.json());
 
 app.use(cors());

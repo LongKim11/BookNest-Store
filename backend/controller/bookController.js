@@ -1,4 +1,12 @@
 import { Book } from "../model/bookModel.js";
+import { createClient } from "redis";
+import { REDIS_PORT } from "../config.js";
+
+const client = await createClient({
+  url: `redis://redis:${REDIS_PORT}`,
+})
+  .on("error", (err) => console.log("Redis Client Error", err))
+  .connect();
 
 const getAllBooks = async (req, res) => {
   try {
@@ -17,12 +25,26 @@ const getBookById = async (req, res) => {
   try {
     const id = req.params.id;
     const book = await Book.findById(id);
+
+    await client.set(id, JSON.stringify(book));
+
     return res.status(200).json(book);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 };
+
+async function cache(req, res, next) {
+  const id = req.params.id;
+  const data = await client.get(id);
+  if (data) {
+    let book = JSON.parse(data);
+    book = { ...book, isCached: "true" };
+    return res.status(200).json(book);
+  }
+  next();
+}
 
 const createBook = async (req, res) => {
   try {
@@ -80,4 +102,4 @@ const deleteBook = async (req, res) => {
   }
 };
 
-export { getAllBooks, getBookById, createBook, updateBook, deleteBook };
+export { getAllBooks, getBookById, cache, createBook, updateBook, deleteBook };

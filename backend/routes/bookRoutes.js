@@ -5,13 +5,14 @@ import {
   createBook,
   updateBook,
   deleteBook,
+  cache,
 } from "../controller/bookController.js";
 
 const router = express.Router();
 
 router.get("/", getAllBooks);
 
-router.get("/:id", getBookById);
+router.get("/:id", cache, getBookById);
 
 router.post("/", createBook);
 
