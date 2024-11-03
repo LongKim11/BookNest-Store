@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   react-app:
     build:
@@ -14,12 +12,23 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8092:8092"
+    # ports:
+    #   - "8092:8092"
     networks:
       - mern-app
     depends_on:
       - mongo
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8092:8092"
+    networks:
+      - mern-app
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    depends_on:
+      - api-server
 
   mongo:
     image: mongo:latest
