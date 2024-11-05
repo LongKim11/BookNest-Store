@@ -7,22 +7,13 @@ services:
       - "5173:5173"
     networks:
       - mern-app
-
-  redis:
-    image: "redis:latest"
-    ports:
-      - "6379:6379"
-    networks:
-      - mern-app
-    volumes:
-      - redis-data:/data
+    depends_on:
+      - api-server
 
   api-server:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    # ports:
-    #   - "8092:8092"
     deploy:
       replicas: 3
     networks:
@@ -30,6 +21,15 @@ services:
     depends_on:
       - mongo
       - redis
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - mern-app
+    volumes:
+      - mongo-data:/data/db
 
   nginx:
     image: nginx:latest
@@ -42,14 +42,14 @@ services:
     depends_on:
       - api-server
 
-  mongo:
-    image: mongo:latest
+  redis:
+    image: "redis:latest"
     ports:
-      - "27017:27017"
+      - "6379:6379"
     networks:
       - mern-app
     volumes:
-      - mongo-data:/data/db
+      - redis-data:/data
 
 networks:
   mern-app:
