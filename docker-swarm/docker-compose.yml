@@ -1,0 +1,64 @@
+services:
+  react-app:
+    image: 127.0.0.1:5000/react-app
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    networks:
+      - mernstack_mern-app
+    depends_on:
+      - api-server
+
+  api-server:
+    image: 127.0.0.1:5000/api-server
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 3
+    networks:
+      - mernstack_mern-app
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - mernstack_mern-app
+    volumes:
+      - mongo-data:/data/db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8092:8092"
+    networks:
+      - mernstack_mern-app
+    volumes:
+      - ../reverse-proxy/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - api-server
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - mernstack_mern-app
+    volumes:
+      - redis-data:/data
+
+networks:
+  mernstack_mern-app:
+    driver: overlay
+    attachable: true
+volumes:
+  mongo-data:
+    driver: local
+  redis-data:
+    driver: local
