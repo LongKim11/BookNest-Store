@@ -1,4 +1,4 @@
-# Link video thuyết trình:
+# Link video thuyết trình: https://youtu.be/gwvFhrjUSx0
 
 # Mernstack bookstore
 
@@ -36,7 +36,7 @@ Level 2:
 - Từ đó ta có thể thấy được rằng, Nginx đã thực hiện phân phối request đến nhiều backend container khác nhau.
 - Để kiếm tra Redis cache thông tin, hãy thực hiện thêm 1 sách tại http://localhost:5173.
 - Chọn display là Card trên giao diện để lấy id của sách vừa thêm.
-- Vào Postman, thực hiện gửi GET request đến http://localhost:5173/id với id là id của sách ở bước trên.
+- Vào Postman, thực hiện gửi GET request đến http://localhost:5173/books/id với id là id của sách ở bước trên.
 - Ta sẽ thấy dữ liệu trả về là thông tin sách.
 - Vì đây là dữ liệu mới và lần đầu được request để lấy thông tin nên Redis chỉ mới lưu lại thông tin này.
 - Thực hiện gửi GET request giống bước trên lần nữa, ta sẽ thấy dữ liệu trả về đã có thêm dòng "isCached: true" tức đó là dữ liệu cache từ Redis.
