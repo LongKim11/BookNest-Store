@@ -38,7 +38,6 @@ mernstack-bookstore/
 ├── docker-swarm/     # Swarm-ready compose file
 └── docker-compose.yml
 ```
-
 ---
 
 ## 🧪 Deployment Levels
